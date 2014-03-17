@@ -4,6 +4,10 @@
 
 require 'sinatra'
 require 'sinatra/content_for'
+if development?
+  require "sinatra/reloader"
+  require 'pry'
+end
 enable :sessions
 
 # Load our dependencies and configuration settings
