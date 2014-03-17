@@ -117,21 +117,6 @@ end
 ##
 # Access the user's Evernote account and display account data
 ##
-get '/list' do
-  begin
-    # Get notebooks
-    session[:notebooks] = notebooks.map(&:name)
-    # Get username
-    session[:username] = en_user.username
-    # Get total note count
-    session[:total_notes] = total_note_count
-    erb :index
-  rescue => e
-    @last_error = "Error listing notebooks: #{e.message}"
-    erb :error
-  end
-end
-
 get '/notebooks' do
   begin
     if !session[:access_token]
@@ -145,7 +130,7 @@ get '/notebooks' do
       @total_notes = total_note_count
     end
 
-    erb :notebooks
+    erb "notebooks/index".to_sym
   rescue => e
     @last_error = "Error listing notebooks: #{e.message}"
     erb :error
