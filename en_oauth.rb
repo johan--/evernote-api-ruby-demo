@@ -3,6 +3,7 @@
 ##
 
 require 'sinatra'
+require 'sinatra/content_for'
 enable :sessions
 
 # Load our dependencies and configuration settings
@@ -183,7 +184,7 @@ __END__
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Demo</a>
+          <!-- <a class="navbar-brand" href="/">Demo</a> -->
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -228,7 +229,7 @@ __END__
 <% if @alert %>
   <div class="alert alert-danger"><%= @alert %></div>
 <% else %>
-  <div class="alert alert-success">Hi <strong><em><%= @username %></em></strong>, there are <%= @total_notes %> notes in their account</div>
+  <div class="alert alert-success">Hi <strong><em><%= @username %></em></strong>, there are <%= @total_notes %> notes in your account</div>
   <div class="panel panel-default panel-info">
     <div class="panel-heading">
       Notebooks
@@ -237,7 +238,11 @@ __END__
 
     <ul class="list-group">
       <% @notebooks_names.each do |notebook| %>
-        <li class="list-group-item"><%= notebook %></li>
+        <li class="list-group-item">
+          <%= notebook %>
+          <a class='text-right' href='/notebooks/new'><span class="glyphicon glyphicon-remove pull-right"></span></a>
+          <a class='text-right' href='/notebooks/new'><span class="glyphicon glyphicon-pencil pull-right"></span></a>
+        </li>
       <% end %>
     </ul>
   </div>
