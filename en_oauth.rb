@@ -223,3 +223,22 @@ __END__
 
 <p>An error occurred: <%= @last_error %></p>
 <p>Please <a href="/reset">start over</a>.</p>
+
+@@ notebooks
+<% if @alert %>
+  <div class="alert alert-danger"><%= @alert %></div>
+<% else %>
+  <div class="alert alert-success">Hi <strong><em><%= @username %></em></strong>, there are <%= @total_notes %> notes in their account</div>
+  <div class="panel panel-default panel-info">
+    <div class="panel-heading">
+      Notebooks
+      <a href='/notebooks/new'><span class="glyphicon glyphicon-plus pull-right"></span></a>
+    </div>
+
+    <ul class="list-group">
+      <% @notebooks_names.each do |notebook| %>
+        <li class="list-group-item"><%= notebook %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
