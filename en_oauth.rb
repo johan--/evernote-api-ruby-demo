@@ -188,33 +188,20 @@ __END__
 </html>
 
 @@ index
-<html>
-<head>
-  <title>Evernote Ruby Example App</title>
-</head>
-<body>
-  <a href="/requesttoken">Click here</a> to authenticate this application using OAuth.
-  <% if session[:notebooks] %>
-  <hr />
-  <h3>The current user is <%= session[:username] %> and there are <%= session[:total_notes] %> notes in their account</h3>
-  <br />
-  <h3>Here are the notebooks in this account:</h3>
-  <ul>
-    <% session[:notebooks].each do |notebook| %>
-    <li><%= notebook %></li>
-    <% end %>
-  </ul>
-  <% end %>
-</body>
-</html>
+<% content_for(:title) do %>
+  Evernote Ruby Example App
+<% end %>
 
-@@ error 
-<html>
-<head>
-  <title>Evernote Ruby Example App &mdash; Error</title>
-</head>
-<body>
-  <p>An error occurred: <%= @last_error %></p>
-  <p>Please <a href="/reset">start over</a>.</p>
-</body>
-</html>
+<% if session[:access_token] %>
+  <a href="/reset" class="btn btn-primary btn-lg" role="button">Reset Token</a>
+<% else %>
+  <a href="/requesttoken" class="btn btn-primary btn-lg" role="button">Authorize with Evernote</a>
+<% end %>
+
+@@ error
+<% content_for(:title) do %>
+  Evernote Ruby Example App &mdash; Error
+<% end %>
+
+<p>An error occurred: <%= @last_error %></p>
+<p>Please <a href="/reset">start over</a>.</p>
