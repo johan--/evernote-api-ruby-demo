@@ -105,7 +105,7 @@ get '/callback' do
   session[:oauth_verifier] = params['oauth_verifier']
   begin
     session[:access_token] = session[:request_token].get_access_token(:oauth_verifier => session[:oauth_verifier])
-    redirect '/list'
+    redirect '/notebooks'
   rescue => e
     @last_error = 'Error extracting access token'
     erb :error
@@ -131,6 +131,24 @@ get '/list' do
   end
 end
 
+get '/notebooks' do
+  begin
+    # Get notebooks
+    @notebooks_names = notebooks.map(&:name)
+    # Get username
+    @username = en_user.username
+    # Get total note count
+    @total_notes = total_note_count
+
+    if !session[:access_token]
+      @alert = 'You need to authorize first.'
+    end
+    erb :notebooks
+  rescue => e
+    @last_error = "Error listing notebooks: #{e.message}"
+    erb :error
+  end
+end
 
 __END__
 
