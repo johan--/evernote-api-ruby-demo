@@ -1,0 +1,12 @@
+<% @notice ||= nil %>
+
+<% if @notice %>
+  <div class="alert alert-danger"><%= @notice %></div>
+<% end %>
+<form role="form" action="/notebooks/create" method='post'>
+  <div class="form-group">
+    <label for="notebook-name">Notebook Name:</label>
+    <input type="text" name='notebook_name' class="form-control" id="notebook-name" placeholder="Enter Notebook Name">
+  </div>
+  <button type="submit" class="btn btn-default">Create</button>
+</form>

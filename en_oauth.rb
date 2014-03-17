@@ -141,3 +141,19 @@ get '/notebooks' do
   end
 end
 
+get '/notebooks/new' do
+  erb "notebooks/new".to_sym
+end
+
+post '/notebooks/create' do
+  if !params[:notebook_name].empty?
+    notebook = Evernote::EDAM::Type::Notebook.new
+    notebook.name = params[:notebook_name]
+    note_store.createNotebook(notebook)
+    redirect '/notebooks'
+  else
+    @notice = 'Notebook name cannot be empty.'
+    erb "notebooks/new".to_sym
+  end
+end
+
