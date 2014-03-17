@@ -134,16 +134,17 @@ end
 
 get '/notebooks' do
   begin
-    # Get notebooks
-    @notebooks_names = notebooks.map(&:name)
-    # Get username
-    @username = en_user.username
-    # Get total note count
-    @total_notes = total_note_count
-
     if !session[:access_token]
-      @alert = 'You need to authorize first.'
+      @not_authorized = true
+    else
+      # Get notebooks
+      @notebooks_names = notebooks.map(&:name)
+      # Get username
+      @username = en_user.username
+      # Get total note count
+      @total_notes = total_note_count
     end
+
     erb :notebooks
   rescue => e
     @last_error = "Error listing notebooks: #{e.message}"
