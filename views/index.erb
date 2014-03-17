@@ -1,0 +1,9 @@
+<% content_for(:title) do %>
+  Evernote Ruby Example App
+<% end %>
+
+<% if session[:access_token] %>
+  <a href="/reset" class="btn btn-primary btn-lg" role="button">Reset Token</a>
+<% else %>
+  <a href="/requesttoken" class="btn btn-primary btn-lg" role="button">Authorize with Evernote</a>
+<% end %>
