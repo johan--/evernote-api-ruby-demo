@@ -1,21 +1,29 @@
 <% if @not_authorized %>
   <div class="alert alert-danger">You need to <a href='/requesttoken'>authorize</a> first.</div>
 <% else %>
-  <div class="alert alert-success">Hi <strong><em><%= @username %></em></strong>, there are <%= @total_notes %> notes in your account</div>
-  <div class="panel panel-default panel-info">
+  <div class="alert alert-success">Hi <strong><em><%= @username %></em></strong>, there are <%= @total_notes_count %> notes in your account</div>
+  <div class="panel panel-default panel-info notebooks-panel">
     <div class="panel-heading">
       Notebooks
       <a href='/notebooks/new'><span class="glyphicon glyphicon-plus pull-right"></span></a>
     </div>
 
     <ul class="list-group">
-      <% @notebooks_names.each do |notebook| %>
+      <% @total_notebooks.each do |notebook| %>
         <li class="list-group-item">
-          <%= notebook %>
-          <a class='text-right' href='/notebooks/new'><span class="glyphicon glyphicon-remove pull-right"></span></a>
-          <a class='text-right' href='/notebooks/new'><span class="glyphicon glyphicon-pencil pull-right"></span></a>
+          <%= notebook.name %>
+          <a class='text-right' href="#"><span id='notebook-delete' class="glyphicon glyphicon-remove pull-right"></span></a>
+          <a class='text-right' href='/notebooks/<%= notebook.guid %>/edit'><span class="glyphicon glyphicon-pencil pull-right" style='padding-right:1em;'></span></a>
         </li>
       <% end %>
     </ul>
   </div>
+<% end %>
+
+<% content_for(:js) do %>
+<script>
+$('.notebooks-panel #notebook-delete').click(function(){
+  alert("Evernote API does not support to delete notebook, even under full access.")
+});
+</script>
 <% end %>

@@ -127,11 +127,11 @@ get '/notebooks' do
       @not_authorized = true
     else
       # Get notebooks
-      @notebooks_names = notebooks.map(&:name)
+      @total_notebooks = notebooks
       # Get username
       @username = en_user.username
       # Get total note count
-      @total_notes = total_note_count
+      @total_notes_count = total_note_count
     end
 
     erb "notebooks/index".to_sym
@@ -157,3 +157,22 @@ post '/notebooks/create' do
   end
 end
 
+get '/notebooks/:id/edit' do
+  erb "notebooks/edit".to_sym
+end
+
+put '/notebooks/:id' do
+  if !params[:notebook_name].empty?
+    notebook = note_store.getNotebook(params[:id])
+    notebook.name = params[:notebook_name]
+    note_store.updateNotebook(notebook)
+    redirect '/notebooks'
+  else
+    @notice = 'Notebook name cannot be empty.'
+    erb "notebooks/edit".to_sym
+  end
+end
+
+# Evernote API does not support deleting notebook, even under full access.
+delete '/notebooks/:id' do
+end
