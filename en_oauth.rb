@@ -55,6 +55,23 @@ helpers do
       total_count + (counts.notebookCounts[notebook.guid] || 0)
     end
   end
+
+  def username
+    @username ||= en_user.username
+  end
+
+  def authorized
+    !!session[:access_token]
+  end
+
+  def find_notebook
+    note_store.getNotebook(params[:notebook_id])
+  end
+
+  def get_note_content(note_guid)
+    note_store.getNote(note_guid, true, true, false, false).content
+  end
+
 end
 
 ##
@@ -123,13 +140,13 @@ end
 ##
 get '/notebooks' do
   begin
-    if !session[:access_token]
-      @not_authorized = true
-    else
+    if authorized
       # Get notebooks
-      @total_notebooks = notebooks
+      # use #notebook helper
+      #
       # Get username
-      @username = en_user.username
+      # use #username helper
+      #
       # Get total note count
       @total_notes_count = total_note_count
     end
@@ -157,13 +174,13 @@ post '/notebooks/create' do
   end
 end
 
-get '/notebooks/:id/edit' do
+get '/notebooks/:notebook_id/edit' do
   erb "notebooks/edit".to_sym
 end
 
-put '/notebooks/:id' do
+put '/notebooks/:notebook_id' do
   if !params[:notebook_name].empty?
-    notebook = note_store.getNotebook(params[:id])
+    notebook = find_notebook
     notebook.name = params[:notebook_name]
     note_store.updateNotebook(notebook)
     redirect '/notebooks'

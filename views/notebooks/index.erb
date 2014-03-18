@@ -1,7 +1,7 @@
-<% if @not_authorized %>
+<% if !authorized %>
   <div class="alert alert-danger">You need to <a href='/requesttoken'>authorize</a> first.</div>
 <% else %>
-  <div class="alert alert-success">Hi <strong><em><%= @username %></em></strong>, there are <%= @total_notes_count %> notes in your account</div>
+  <div class="alert alert-success">Hi <strong><em><%= username %></em></strong>, there are <%= notebooks.count %> notebooks and <%= @total_notes_count %> notes in your account</div>
   <div class="panel panel-default panel-info notebooks-panel">
     <div class="panel-heading">
       Notebooks
@@ -9,7 +9,7 @@
     </div>
 
     <ul class="list-group">
-      <% @total_notebooks.each do |notebook| %>
+      <% notebooks.each do |notebook| %>
         <li class="list-group-item">
           <%= notebook.name %>
           <a class='text-right' href="#"><span id='notebook-delete' class="glyphicon glyphicon-remove pull-right"></span></a>
