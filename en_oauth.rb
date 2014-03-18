@@ -4,6 +4,8 @@
 
 require 'sinatra'
 require 'sinatra/content_for'
+# require 'sinatra/flash'
+
 if development?
   require "sinatra/reloader"
   require 'pry'
@@ -288,4 +290,17 @@ end
 get '/notebooks/:notebook_id/notes/:id' do
   @note = find_note
   erb "notebooks/notes/show".to_sym
+end
+
+delete '/notebooks/:notebook_id/notes/:id' do
+  @note = find_note
+  begin
+    note_store.deleteNote(@note.guid)
+    @notice = "Successfully delete note."
+  rescue => e
+    @notice = "Error deleting note: #{e.message}"
+  end
+
+  # Need to redirect with flash
+  redirect "/notebooks/#{params[:notebook_id]}/notes"
 end
