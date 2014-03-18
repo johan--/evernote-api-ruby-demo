@@ -191,5 +191,15 @@ put '/notebooks/:notebook_id' do
 end
 
 # Evernote API does not support deleting notebook, even under full access.
-delete '/notebooks/:id' do
+delete '/notebooks/:notebook_id' do
 end
+
+get '/notebooks/:notebook_id/notes' do
+  @notebook = find_notebook
+  filter = Evernote::EDAM::NoteStore::NoteFilter.new
+  filter.notebookGuid = @notebook.guid
+  @notes = note_store.findNotes(filter, 0, 100).notes
+
+  erb "notebooks/notes/index".to_sym
+end
+

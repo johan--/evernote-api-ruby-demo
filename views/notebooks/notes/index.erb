@@ -1,0 +1,22 @@
+<% if !authorized %>
+  <div class="alert alert-danger">You need to <a href='/requesttoken'>authorize</a> first.</div>
+<% else %>
+  <div class="alert alert-success">Hi <strong><em><%= username %></em></strong>, there are <%= @notes.count %> notes in your notebook.</div>
+  <div class="panel panel-default panel-info notes-panel">
+    <div class="panel-heading">
+      <%= @notebook.name %>
+      <a href="/notebooks/<%= @notebook.guid %>/new"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+    </div>
+
+    <ul class="list-group">
+      <% @notes.each do |note| %>
+        <li class="list-group-item">
+          <%= note.title %>
+          <a class='text-right' href="#"><span id='note-delete' class="glyphicon glyphicon-remove pull-right"></span></a>
+          <a class='text-right' href='/notebooks/<%= @notebook.guid %>/notes/<%= note.guid %>edit'><span class="glyphicon glyphicon-pencil pull-right" style='padding-right:1em;'></span></a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
