@@ -11,7 +11,7 @@
     <ul class="list-group">
       <% notebooks.each do |notebook| %>
         <li class="list-group-item">
-          <%= notebook.name %>
+          <a href="/notebooks/<%= notebook.guid %>/notes"><%= notebook.name %></a>
           <a class='text-right' href="#"><span id='notebook-delete' class="glyphicon glyphicon-remove pull-right"></span></a>
           <a class='text-right' href='/notebooks/<%= notebook.guid %>/edit'><span class="glyphicon glyphicon-pencil pull-right" style='padding-right:1em;'></span></a>
         </li>

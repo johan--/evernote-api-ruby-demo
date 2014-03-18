@@ -1,7 +1,7 @@
 <% if @notice %>
   <div class="alert alert-danger"><%= @notice %></div>
 <% end %>
-<form role="form" action="/notebooks/<%= params[:id] %>" method='post'>
+<form role="form" action="/notebooks/<%= params[:notebook_id] %>" method='post'>
   <input type='hidden' name='_method' value='put'>
   <div class="form-group">
     <label for="notebook-name">Notebook Name:</label>

@@ -75,7 +75,11 @@ helpers do
   end
 
   def get_note_content(note)
-    note_store.getNote(note.guid, true, true, false, false).content
+    begin
+      note_store.getNote(note.guid, true, true, false, false).content.gsub("'", "\"").split("\n").join('\n')
+    rescue => e
+      ''
+    end
   end
 
 end
