@@ -72,8 +72,8 @@ helpers do
     note_store.getNote(params[:id], true, true, false, false)
   end
 
-  def get_note_content(note_guid)
-    note_store.getNote(note_guid, true, true, false, false).content
+  def get_note_content(note)
+    note_store.getNote(note.guid, true, true, false, false).content
   end
 
 end
@@ -283,4 +283,9 @@ put '/notebooks/:notebook_id/notes/:id/update' do
     @notice = 'Note title cannot be empty.'
     erb "notebooks/notes/edit".to_sym
   end
+end
+
+get '/notebooks/:notebook_id/notes/:id' do
+  @note = find_note
+  erb "notebooks/notes/show".to_sym
 end

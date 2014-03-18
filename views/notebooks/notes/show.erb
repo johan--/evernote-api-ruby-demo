@@ -1,0 +1,25 @@
+<% content_for :js do %>
+  <script src="/javascripts/xml-writer.js"></script>
+  <script src="/javascripts/xml-parser.js"></script>
+  <script src="/javascripts/enml.js"></script>
+
+  <script>
+  $(document).ready(function(){
+    var content = '<%= get_note_content(@note) %>';
+    $('.note-panel .panel-body').html( enml.HTMLOfENML(content, []) );
+  });
+  </script>
+<% end %>
+
+<% if !authorized %>
+  <div class="alert alert-danger">You need to <a href='/requesttoken'>authorize</a> first.</div>
+<% else %>
+  <div class="panel panel-default panel-info note-panel">
+    <div class="panel-heading">
+      <%= @note.title %>
+    </div>
+    <div class="panel-body">
+    </div>
+  </div>
+<% end %>
+
