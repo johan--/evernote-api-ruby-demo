@@ -1,0 +1,16 @@
+<% @notice ||= nil %>
+
+<% if @notice %>
+  <div class="alert alert-danger"><%= @notice %></div>
+<% end %>
+<form role="form" action="/notebooks/<%= params[:notebook_id] %>/notes/create" method='post'>
+  <div class="form-group">
+    <label for="note-title">Note Title:</label>
+    <input type="text" name='note_title' class="form-control" id="note-title" placeholder="Enter Note Title">
+  </div>
+  <div class="form-group">
+    <label for="note-content">Note Content:</label>
+    <textarea class="form-control" rows="3" name='note_content' placeholder="Enter Note Content"></textarea>
+  </div>
+  <button type="submit" class="btn btn-default">Create</button>
+</form>
