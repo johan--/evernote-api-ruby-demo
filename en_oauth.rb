@@ -68,6 +68,10 @@ helpers do
     note_store.getNotebook(params[:notebook_id])
   end
 
+  def find_note
+    note_store.getNote(params[:id], true, true, false, false)
+  end
+
   def get_note_content(note_guid)
     note_store.getNote(note_guid, true, true, false, false).content
   end
@@ -179,8 +183,8 @@ get '/notebooks/:notebook_id/edit' do
 end
 
 put '/notebooks/:notebook_id' do
+  @notebook = find_notebook
   if !params[:notebook_name].empty?
-    notebook = find_notebook
     notebook.name = params[:notebook_name]
     note_store.updateNotebook(notebook)
     redirect '/notebooks'
@@ -231,7 +235,7 @@ post '/notebooks/:notebook_id/notes/create' do
       ## http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
       @notice = "EDAMUserException: #{edue}"
       erb "notebooks/notes/new".to_sym
-    rescue Evernote::EDAM::Error::EDAMNotFoundException => ednfe
+    rescue Evernote::EDAM::Error::EDAMNotFoundException
       ## Parent Notebook GUID doesn't correspond to an actual notebook
       @notice = "EDAMNotFoundException: Invalid parent notebook GUID"
       erb "notebooks/notes/new".to_sym
@@ -243,3 +247,40 @@ post '/notebooks/:notebook_id/notes/create' do
   end
 end
 
+get '/notebooks/:notebook_id/notes/:id/edit' do
+  @note = find_note
+  erb "notebooks/notes/edit".to_sym
+end
+
+put '/notebooks/:notebook_id/notes/:id/update' do
+  @note = find_note
+
+  if !params[:note_title].empty?
+    @note.title = params[:note_title]
+
+    n_body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    n_body += "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">"
+    n_body += "<en-note>#{params[:note_content]}</en-note>"
+    @note.content = n_body
+
+    ## Attempt to create note in Evernote account
+    begin
+      note_store.updateNote(@note)
+      redirect "/notebooks/#{params[:notebook_id]}/notes/#{params[:id]}"
+    rescue Evernote::EDAM::Error::EDAMUserException => edue
+      ## Something was wrong with the note data
+      ## See EDAMErrorCode enumeration for error code explanation
+      ## http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
+      @notice = "EDAMUserException: #{edue}"
+      erb "notebooks/notes/new".to_sym
+    rescue Evernote::EDAM::Error::EDAMNotFoundException
+      ## Parent Notebook GUID doesn't correspond to an actual notebook
+      @notice = "EDAMNotFoundException: Invalid parent notebook GUID"
+      erb "notebooks/notes/edit".to_sym
+    end
+
+  else
+    @notice = 'Note title cannot be empty.'
+    erb "notebooks/notes/edit".to_sym
+  end
+end
