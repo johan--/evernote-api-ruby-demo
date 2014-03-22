@@ -10,7 +10,7 @@ include ActionView::Helpers::JavaScriptHelper
 
 if development?
   require "sinatra/reloader"
-  require 'pry'
+  # require 'pry'
 end
 enable :sessions
 
