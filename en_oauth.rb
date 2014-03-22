@@ -2,9 +2,11 @@
 # Copyright 2012 Evernote Corporation. All rights reserved.
 ##
 
+require 'action_view'
 require 'sinatra'
 require 'sinatra/content_for'
-# require 'sinatra/flash'
+
+include ActionView::Helpers::JavaScriptHelper
 
 if development?
   require "sinatra/reloader"
@@ -75,11 +77,7 @@ helpers do
   end
 
   def get_note_content(note)
-    begin
-      note_store.getNote(note.guid, true, true, false, false).content.gsub("'", "\"").split("\n").join('\n')
-    rescue => e
-      ''
-    end
+    escape_javascript(note_store.getNote(note.guid, true, true, false, false).content) rescue 'Get note content error'
   end
 
 end
@@ -146,18 +144,12 @@ end
 
 
 ##
-# Access the user's Evernote account and display account data
+# notebook CRUD start
 ##
 get '/notebooks' do
   begin
     if authorized
-      # Get notebooks
-      # use #notebook helper
-      #
-      # Get username
-      # use #username helper
-      #
-      # Get total note count
+      # Get total notes count
       @total_notes_count = total_note_count
     end
 
@@ -185,14 +177,15 @@ post '/notebooks/create' do
 end
 
 get '/notebooks/:notebook_id/edit' do
+  @notebook = find_notebook
   erb "notebooks/edit".to_sym
 end
 
 put '/notebooks/:notebook_id' do
   @notebook = find_notebook
   if !params[:notebook_name].empty?
-    notebook.name = params[:notebook_name]
-    note_store.updateNotebook(notebook)
+    @notebook.name = params[:notebook_name]
+    note_store.updateNotebook(@notebook)
     redirect '/notebooks'
   else
     @notice = 'Notebook name cannot be empty.'
@@ -204,6 +197,9 @@ end
 delete '/notebooks/:notebook_id' do
 end
 
+##
+# note CRUD start
+##
 get '/notebooks/:notebook_id/notes' do
   @notebook = find_notebook
   filter = Evernote::EDAM::NoteStore::NoteFilter.new
@@ -293,6 +289,7 @@ end
 
 get '/notebooks/:notebook_id/notes/:id' do
   @note = find_note
+  @content = get_note_content(@note)
   erb "notebooks/notes/show".to_sym
 end
 
