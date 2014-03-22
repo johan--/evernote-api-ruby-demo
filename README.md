@@ -1,5 +1,4 @@
 # Evernote API ruby demo
-- - -
 
 Devrived from [simple-api-client-example-ruby](https://github.com/evernote/simple-api-client-example-ruby), which includes:
 
@@ -12,13 +11,10 @@ This demo adds:
 + note CRUD
 + [ENML](http://dev.evernote.com/doc/articles/enml.php) display
 
+
 ## Usage
-+ Requirement:
 
-    require 'sinatra'
-    require 'sinatra/content_for'
-    require 'action_view'
-
++ `$ bundle install`
 + Update oauth consumer key and secret in `evernote_config.rb`.
 + Start up sinatra, `ruby en_oauth.rb`.
 + Check it on `localhost:4567`.
