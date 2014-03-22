@@ -2,9 +2,9 @@
 # Copyright 2012 Evernote Corporation. All rights reserved.
 ##
 
-require 'action_view'
 require 'sinatra'
 require 'sinatra/content_for'
+require 'action_view'
 
 include ActionView::Helpers::JavaScriptHelper
 

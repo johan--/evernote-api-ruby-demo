@@ -6,6 +6,7 @@
   <div class="panel panel-default panel-info notes-panel">
     <div class="panel-heading">
       <%= @notebook.name %>
+      <a class='text-right' href='/notebooks/<%= @notebook.guid %>/notes/new'><span class="glyphicon glyphicon-plus pull-right"></span></a>
     </div>
 
     <ul class="list-group">
@@ -18,7 +19,6 @@
           </form>
 
           <a class='text-right' href='/notebooks/<%= @notebook.guid %>/notes/<%= note.guid %>/edit'><span class="glyphicon glyphicon-pencil pull-right" style='padding-right:1em;'></span></a>
-          <a class='text-right' href='/notebooks/<%= @notebook.guid %>/notes/new'><span class="glyphicon glyphicon-plus pull-right" style='padding-right:1em;'></span></a>
         </li>
       <% end %>
     </ul>
