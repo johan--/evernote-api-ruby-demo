@@ -9,14 +9,14 @@ require 'action_view'
 include ActionView::Helpers::JavaScriptHelper
 
 if development?
-  require "sinatra/reloader"
+  require 'sinatra/reloader'
   # require 'pry'
 end
 enable :sessions
 
 # Load our dependencies and configuration settings
 $LOAD_PATH.push(File.expand_path(File.dirname(__FILE__)))
-require "evernote_config.rb"
+require 'config/evernote_config.rb'
 
 ##
 # Verify that you have obtained an Evernote API key
